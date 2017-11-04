@@ -8,6 +8,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import javax.annotation.Resource;
+
 import static org.junit.Assert.*;
 
 public class VarastoTest {
@@ -64,5 +67,46 @@ public class VarastoTest {
         // varastossa pitäisi olla tilaa 10 - 8 + 2 eli 4
         assertEquals(4, varasto.paljonkoMahtuu(), vertailuTarkkuus);
     }
+    @Test
+    public void tyhjastaEiVoiOttaa(){
+        varasto.otaVarastosta(2);
+        assertEquals(0, varasto.getSaldo(), vertailuTarkkuus);
+    }
 
+    @Test
+    public  void taysiOnTaynna(){
+        varasto.lisaaVarastoon(10);
+        varasto.lisaaVarastoon(2);
+        assertEquals(10, varasto.getSaldo(), vertailuTarkkuus);
+    }
+
+    @Test
+    public void varastonLuominenToimii(){
+        Varasto v = new Varasto(-2);
+        assertEquals(0.0, v.getTilavuus(), vertailuTarkkuus);
+        v = new Varasto(-1,-2);
+        assertEquals(0.0, v.getSaldo(), vertailuTarkkuus);
+        v = new Varasto(2, 3);
+        assertEquals(2.0, v.getSaldo(), vertailuTarkkuus);
+        v = new Varasto(-1, 3);
+        assertEquals(0.0, v.getTilavuus(), vertailuTarkkuus);
+        v = new Varasto(10, 3);
+        assertEquals(3.0, v.getSaldo(), vertailuTarkkuus);
+
+    }
+
+    @Test
+    public void tekstiksiMuuntaminenToimii(){
+        String ans = "saldo = 0.0, vielä tilaa 10.0";
+        String s = varasto.toString();
+        assertEquals(ans, s);
+    }
+
+    @Test
+    public void varastotToimivatOikein(){
+        varasto.lisaaVarastoon(-2);
+        assertEquals(0.0, varasto.getSaldo(), vertailuTarkkuus);
+        varasto.otaVarastosta(-2);
+        assertEquals(0.0, varasto.getSaldo(),vertailuTarkkuus);
+    }
 }
