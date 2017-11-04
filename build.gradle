@@ -32,7 +32,14 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
     }
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['main/**'])
+        })
+    }
 }
+
 
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
